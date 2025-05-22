@@ -2,103 +2,62 @@ services:
   rabbit-1:
     image: rabbitmq:3-management
     container_name: rabbit-1
-    hostname: rabbit-1
+    hostname: r1
+    networks:
+      - rabbitnet
     ports:
       - "15672:15672"
       - "5672:5672"
     environment:
       RABBITMQ_ERLANG_COOKIE: "GKVOSIWUJDMEPWLGTSMV"
-      RABBITMQ_NODENAME: rabbit@rabbit-1
-      RABBITMQ_DEFAULT_USER: user
-      RABBITMQ_DEFAULT_PASS: password
-    networks:
-      - rabbitmq_net
+      RABBITMQ_NODENAME: rabbit@r1
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: admin
     volumes:
       - rabbit_1:/var/lib/rabbitmq
+      - ./rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
 
   rabbit-2:
     image: rabbitmq:3-management
     container_name: rabbit-2
-    hostname: rabbit-2
+    hostname: r2
+    networks:
+      - rabbitnet
     ports:
       - "15673:15672"
       - "5673:5672"
     environment:
-      RABBITMQ_NODENAME: rabbit@rabbit-2
+      RABBITMQ_NODENAME: rabbit@r2
       RABBITMQ_ERLANG_COOKIE: "GKVOSIWUJDMEPWLGTSMV"
-    networks:
-      - rabbitmq_net
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: admin
     volumes:
       - rabbit_2:/var/lib/rabbitmq
+      - ./rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
 
   rabbit-3:
     image: rabbitmq:3-management
     container_name: rabbit-3
-    hostname: rabbit-3
+    hostname: r3
+    networks:
+      - rabbitnet
     ports:
       - "15674:15672"
       - "5674:5672"
     environment:
-      RABBITMQ_NODENAME: rabbit@rabbit-3
+      RABBITMQ_NODENAME: rabbit@r3
       RABBITMQ_ERLANG_COOKIE: "GKVOSIWUJDMEPWLGTSMV"
-    networks:
-      - rabbitmq_net
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: admin
     volumes:
       - rabbit_3:/var/lib/rabbitmq
-
-  rabbit-4:
-    image: rabbitmq:3-management
-    container_name: rabbit-4
-    hostname: rabbit-4
-    ports:
-      - "15675:15672"
-      - "5675:5672"
-    environment:
-      RABBITMQ_NODENAME: rabbit@rabbit-4
-      RABBITMQ_ERLANG_COOKIE: "GKVOSIWUJDMEPWLGTSMV"
-    networks:
-      - rabbitmq_net
-    volumes:
-      - rabbit_4:/var/lib/rabbitmq
-
-  rabbit-5:
-    image: rabbitmq:3-management
-    container_name: rabbit-5
-    hostname: rabbit-5
-    ports:
-      - "15676:15672"
-      - "5676:5672"
-    environment:
-      RABBITMQ_NODENAME: rabbit@rabbit-5
-      RABBITMQ_ERLANG_COOKIE: "GKVOSIWUJDMEPWLGTSMV"
-    networks:
-      - rabbitmq_net
-    volumes:
-      - rabbit_5:/var/lib/rabbitmq
-  
-  rabbit-6:
-    image: rabbitmq:3-management
-    container_name: rabbit-6
-    hostname: rabbit-6
-    ports:
-      - "15677:15672"
-      - "5677:5672"
-    environment:
-      RABBITMQ_NODENAME: rabbit@rabbit-6
-      RABBITMQ_ERLANG_COOKIE: "GKVOSIWUJDMEPWLGTSMV"
-    networks:
-      - rabbitmq_net
-    volumes:
-      - rabbit_6:/var/lib/rabbitmq
-
-networks:
-  rabbitmq_net:
-    driver: bridge
+      - ./rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
 
 volumes:
   rabbit_1:
   rabbit_2:
   rabbit_3:
-  rabbit_4:
-  rabbit_5:
-  rabbit_6:
+
+networks:
+  rabbitnet:
+    driver: bridge
