@@ -6,7 +6,7 @@ import (
 	"rabbitgo/rabbit"
 	"rabbitgo/utils"
 
-	amqp "github.com/rabbitmq/amqp091-go"
+	// amqp "github.com/rabbitmq/amqp091-go"
 )
 
 func main() {
@@ -18,21 +18,21 @@ func main() {
 	utils.FailOnError(err, "Failed to open a channel")
 	defer ch.Close()
 
-	q, err := ch.QueueDeclare(
-		"fila",
-		true,  // durable
-		false, // delete when unused
-		false, // exclusive
-		false, // no-wait
-		amqp.Table{
-			"x-queue-type": "quorum",
-			"x-quorum-initial-group-size": 6,
-		}, // arguments
-	)
-	utils.FailOnError(err, "Failed to declare a queue")
+	// q, err := ch.QueueDeclare(
+	// 	"fila",
+	// 	true,  // durable
+	// 	false, // delete when unused
+	// 	false, // exclusive
+	// 	false, // no-wait
+	// 	amqp.Table{
+	// 		"x-queue-type": "quorum",
+	// 		"x-quorum-initial-group-size": 6,
+	// 	}, // arguments
+	// )
+	// utils.FailOnError(err, "Failed to declare a queue")
 
 	msgs, err := ch.Consume(
-		q.Name, // queue
+		"fila", // queue
 		"",     // consumer
 		true,   // auto-ack
 		false,  // exclusive

@@ -20,19 +20,18 @@ func main() {
 	utils.FailOnError(err, "Failed to open a channel")
 	defer ch.Close()
 
-	q, err := ch.QueueDeclare(
-		"fila",
-		true,  // durable
-		false, // delete when unused
-		false, // exclusive
-		false, // no-wait
-		amqp.Table{
-			"x-queue-type": "quorum",
-			"x-quorum-initial-group-size": 6,
-		}, // arguments
-	)
-
-	utils.FailOnError(err, "Failed to declare a queue")
+	// q, err := ch.QueueDeclare(
+	// 	"fila",
+	// 	true,  // durable
+	// 	false, // delete when unused
+	// 	false, // exclusive
+	// 	false, // no-wait
+	// 	amqp.Table{
+	// 		"x-queue-type": "quorum",
+	// 		"x-quorum-initial-group-size": 6,
+	// 	}, // arguments
+	// )
+	// utils.FailOnError(err, "Failed to declare a queue")
 
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 
@@ -43,7 +42,7 @@ func main() {
 	err = ch.PublishWithContext(
 		ctx,
 		"",     // exchange
-		q.Name, // routing key
+		"fila", // routing key
 		false, // mandatory
 		false, // immediate
 		amqp.Publishing{

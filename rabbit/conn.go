@@ -3,28 +3,27 @@ package rabbit
 import (
 	"fmt"
 	"log"
-	"strconv"
 
 	amqp "github.com/rabbitmq/amqp091-go"
 )
 
 var (
-	ports    = []int{5672, 5673, 5674, 5675, 5676, 5677}
-	host     = "localhost"
-	user     = "user"
-	password = "password"
+	port    = "5672"
+	hosts     = []string{"192.168.255.140", "192.168.255.106", "192.168.255.102"}
+	user     = "admin"
+	password = "admin"
 )
 
-func TryConnect() (*amqp.Connection, int, error) {
-	for _, port := range ports {
-		uri := fmt.Sprint("amqp://", user, ":", password, "@", host, ":", strconv.Itoa(port), "/")
+func TryConnect() (*amqp.Connection, string, error) {
+	for _, host := range hosts {
+		uri := fmt.Sprint("amqp://", user, ":", password, "@", host, ":", port, "/")
 
 		conn, err := amqp.Dial(uri)
 
 		if err == nil {
-			return conn, port, nil
+			return conn, host, nil
 		}
-		log.Printf("Fail to connect on port %d: %s", port, err)
+		log.Printf("Fail to connect on port %s: %s", host, err)
 	}
-	return nil, 0, fmt.Errorf("failed to connect to RabbitMQ")
+	return nil, "---/---/---/---", fmt.Errorf("failed to connect to RabbitMQ")
 }
